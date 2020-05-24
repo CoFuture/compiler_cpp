@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.15)
+project(compiler_cpp)
+
+set(CMAKE_CXX_STANDARD 11)
+
+add_executable(compiler_cpp main.cpp Token.cpp Token.h Lexer.cpp Lexer.h SyntacticParser.cpp SyntacticParser.h SymbolTable.cpp SymbolTable.h)
