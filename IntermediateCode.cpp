@@ -5,16 +5,6 @@
 #include "IntermediateCode.h"
 
 /*中间指令部分函数的具体实现*/
-void InterInstruction::initial() {
-    this->op = OP_NOP;
-    this->result = nullptr;
-    this->arg1 = nullptr;
-    this->arg2 = nullptr;
-    this->function = nullptr;
-    this->jump_target = nullptr;
-    this->label_name = "";
-}
-
 InterInstruction::InterInstruction() {
     this->op = OP_NOP;
     this->result = nullptr;
@@ -67,22 +57,106 @@ InterInstruction::InterInstruction(Operator o, VarElement *arg) {
     this->label_name = "";
 }
 
-InterInstruction::~InterInstruction() {
+void InterInstruction::tostring() {
+    //todo 四元式输出
+    if (!label_name.empty()){
+        cout << label_name << endl;
+        return;
+    }
 
+    switch (op) {
+        case OP_NOP:
+            break;
+        case OP_LABEL:
+            break;
+        case OP_FUN_ENTRY:
+            break;
+        case OP_FUN_EXIT:
+            break;
+        case OP_DECLARE:
+            break;
+        case OP_ASSIGN:
+            break;
+        case OP_ADD:
+            break;
+        case OP_SUB:
+            break;
+        case OP_MUL:
+            break;
+        case OP_DIV:
+            break;
+        case OP_MOD:
+            break;
+        case OP_NEGATIVE:
+            break;
+        case OP_GREATER:
+            break;
+        case OP_GREATER_EQUAL:
+            break;
+        case OP_LESS:
+            break;
+        case OP_LESS_EQUAL:
+            break;
+        case OP_EQUAL:
+            break;
+        case OP_NOT_EQUAL:
+            break;
+        case OP_NOT:
+            break;
+        case OP_AND:
+            break;
+        case OP_OR:
+            break;
+        case OP_LEA:
+            break;
+        case OP_POINTER_SET:
+            break;
+        case OP_POINTER_GET:
+            break;
+        case OP_JUMP:
+            break;
+        case OP_JUMP_TRUE:
+            break;
+        case OP_JUMP_FALSE:
+            break;
+        case OP_ARG:
+            break;
+        case OP_FUN:
+            break;
+        case OP_FUN_CALL:
+            break;
+        case OP_RETURN:
+            break;
+        case OP_RETURN_VALUE:
+            break;
+        default:
+            //默认为NOP指令
+            break;
+    }
 }
 
+InterInstruction::~InterInstruction() = default;
 
 
-
-/*中间代码部分函数的具体实现*/
+/***中间代码部分函数的具体实现***/
 IntermediateCode::~IntermediateCode() {
-
+    //清理intermediateCode
+    for (int i = 0; i < inter_code.size(); ++i) {
+        delete inter_code[i];
+    }
 }
 
+//添加一条四元式指令
 void IntermediateCode::addInstruction(InterInstruction *i) {
-
+    inter_code.push_back(i);
 }
 
 vector<InterInstruction *> &IntermediateCode::getIntermediateCode() {
+    return inter_code;
+}
 
+void IntermediateCode::showIntermediateCode() {
+    for (int i = 0; i < inter_code.size(); ++i) {
+        inter_code[i]->tostring();
+    }
 }

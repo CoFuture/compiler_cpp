@@ -35,6 +35,7 @@
  * goto label       OP_JUMP, label, -, -;
  * if(condition)goto label      OP_JUMP_TRUE, label, condition, -;
  * if(!condition)goto label     OP_JUMP_FALSE, label, condition, -;
+ * function(args)   OP_ARG, -, arg, -;
  * function()       OP_FUN, -, function, -;
  * x = function()   OP_FUN_CALL, x, function, -;
  * return           OP_RETURN, -, -, -;
@@ -52,7 +53,6 @@ class InterInstruction{
     FunElement* function;   //函数指针，用于函数调用
     InterInstruction* jump_target;  //中间指令指针，用于跳转
 
-    void initial();
 public:
     /*定义构造方法*/
     //无参构造方法，课用于生成唯一的label名称
@@ -68,6 +68,9 @@ public:
     //
     ~InterInstruction();
 
+    //显示四元式指令
+    void tostring();
+
 };
 
 // 这里是中间代码，是中间指令的集合
@@ -79,6 +82,8 @@ public:
     void addInstruction(InterInstruction* i);
     //获取中间代码
     vector<InterInstruction*>& getIntermediateCode();
+    //输出中间代码
+    void showIntermediateCode();
 };
 
 
