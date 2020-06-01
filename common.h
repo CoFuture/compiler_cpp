@@ -75,6 +75,26 @@ enum Tag{
     DELIMITER_RIGHT_BRACKET// ]
 };
 
+
+
+//四元式操作符号
+enum Operator{
+    OP_NOP, //空操作符
+    OP_LABEL,   //标签指令
+    OP_FUN_ENTRY, OP_FUN_EXIT, //函数入口和函数出口
+    OP_DECLARE,  //变量或者函数声明
+    OP_ASSIGN,  //赋值=
+    OP_ADD, OP_SUB, OP_MUL, OP_DIV, // + - * / 运算
+    OP_MOD,  //取模运算
+    OP_NEGATIVE,  //取负运算
+    OP_GREATER, OP_GREATER_EQUAL, OP_LESS, OP_LESS_EQUAL, OP_EQUAL, OP_NOT_EQUAL,  // > >= < <= == != 比较判断符号
+    OP_NOT, OP_AND, OP_OR,  // ! && || 与或非运算符
+    OP_LEA, OP_POINTER_SET, OP_POINTER_GET, // 取地址，指针赋值， 指针寻值
+    OP_JUMP, //跳转
+    OP_JUMP_TRUE, OP_JUMP_FALSE, // TRUE条件跳转 FALSE条件跳转
+    OP_ARG, OP_FUN, OP_FUN_CALL,  //函数参数， 函数调用, 函数调用并赋值
+    OP_RETURN, OP_RETURN_VALUE  // 无返回值return 有返回值return
+};
 //类的初始化声明
 //class Scanner;
 //class Lexer;
