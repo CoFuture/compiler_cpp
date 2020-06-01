@@ -7,11 +7,11 @@
 
 #include "common.h"
 #include "Token.h"
+#include "VarElement.h"
+#include "FunElement.h"
 #include <ext/hash_map>
 using namespace __gnu_cxx;
 
-class VarElement;
-class FunElement;
 /**这里是符号表类**/
 
 class SymbolTable {
@@ -58,94 +58,6 @@ public:
     void scopeExit();
     //获取当前作用域路径 用于创建变量or函数
     vector<int>& getScopePath();
-};
-
-/****符号表内——变量/常量元素*****/
-class VarElement {
-private:
-    /***变量元素的属性值****/
-    Tag type;//变量类型
-    string name;//变量名称
-    //extern暂不考虑
-//    //是否是显式变量
-//    bool isExtern;
-    bool isArray;//是否为数组变量
-    int array_length;//数组长度
-    bool isConstant;//是否为常量
-    bool isPointer;//是否为指针变量
-    bool isLeft;//是否是左值的
-
-    //初值数据
-    VarElement* initData;
-
-    //变量是否有初始值
-    bool initialed;
-    //int char 和 string 类型变量的value
-    int intValue;
-    char charValue;
-    string stringValue;
-    //指针变量的处理
-    VarElement* pointerValue;
-
-    //变量的作用域路径
-    vector<int> scopePath;
-
-    /***代码生成和栈帧分配时需要用到的变量****/
-    int size;//变量大小
-    int offset;//局部变量的偏移 全局变量的偏移为0
-
-public:
-    //(指针)变量的创建
-    VarElement(vector<int>& sp, Tag t, string n, bool isPtr);
-    //(数组)变量的创建
-    VarElement(vector<int>& sp, Tag t, string n, int len);
-    //常量对象的创建
-    VarElement(Token* token);
-
-    ~VarElement();
-
-    //获取变量名字
-    string getVarName();//获取变量名字
-    vector<int>& getScopePath();//获取变量作用域
-    string getStrConstantValue();//获取字符常量的值
-    //设置局部变量偏移
-    void setOffset(int off);
-};
-
-/****符号表内——函数元素*****/
-class FunElement {
-    //暂时不考虑extern
-    //是否是函数声明
-    bool isDeclare;
-    //返回类型和函数名字
-    Tag returnType;
-    string name;
-    //参数变量表
-    vector<VarElement*> parameterList;
-
-    /***代码生成和栈帧分配时需要用到的变量****/
-    int maxEspDepth;
-    int currentEspPosition;
-    //作用域栈指针位置
-    vector <int> scopeEsp;
-
-    //TODO 目标代码生成
-public:
-    //构造函数 函数名字 返回值类型 参数列表
-    FunElement(string n, Tag t, vector<VarElement*> &l);
-    ~FunElement();
-    //函数内部作用域管理，栈帧计算
-    void funScopeEnter();
-    void funScopeExit();
-    //函数匹配
-    bool funMatched(FunElement* f);//声明，定义函数匹配
-    bool parameterMatched(vector<VarElement*> &p);//参数列表匹配
-    //设置or访问私有变量函数
-    void setIsDeclare(bool isDec);
-    bool getIsDeclare();
-    string getName();
-    void copyParameterList(vector<VarElement*> p);
-    vector<VarElement*> getParameterList();
 };
 
 #endif //COMPILER_CPP_SYMBOL_TABLE_H
