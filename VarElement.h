@@ -27,9 +27,9 @@ private:
 
     //初值数据
     VarElement* initData;
-
     //变量是否有初始值
     bool initialed;
+
     //int char 和 string 类型变量的value
     int intValue;
     char charValue;
@@ -45,19 +45,24 @@ private:
     int offset;//局部变量的偏移 全局变量的偏移为0
 
 public:
+    /**构造方法定义**/
     //(指针)变量的创建
     VarElement(vector<int>& sp, Tag t, string n, bool isPtr);
     //(数组)变量的创建
     VarElement(vector<int>& sp, Tag t, string n, int len);
     //常量对象的创建
     VarElement(Token* token);
-
+    //析构方法
     ~VarElement();
 
-    //获取变量名字
-    string getVarName();//获取变量名字
-    vector<int>& getScopePath();//获取变量作用域
-    string getStrConstantValue();//获取字符常量的值
+    /**获取变量元素的相关属性**/
+    string getVarName();            //获取变量名字
+    Tag getVarType();               //获取变量类型
+    vector<int>& getScopePath();    //获取变量作用域
+    string getStrConstantValue();   //获取字符常量的值
+    bool isBasicType();             //判断变量是否是基本类型 int or char
+
+    /**设置变量元素的相关属性**/
     //设置局部变量偏移
     void setOffset(int off);
 };

@@ -94,6 +94,11 @@ string VarElement::getVarName() {
     return name;
 }
 
+//获取变量类型
+Tag VarElement::getVarType() {
+    return type;
+}
+
 //获取变量作用域
 vector<int> &VarElement::getScopePath() {
     return scopePath;
@@ -104,7 +109,15 @@ string VarElement::getStrConstantValue() {
     return stringValue;
 }
 
+bool VarElement::isBasicType() {
+    return type == KW_INT || type == KW_CHAR;
+}
+
 //设置局部变量偏移
 void VarElement::setOffset(int off) {
     offset = off;
 }
+
+
+
+
