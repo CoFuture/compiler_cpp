@@ -11,15 +11,15 @@ int main() {
     SymbolTable symbolTable;
     SyntacticParser syntacticParser(lexer, symbolTable);
     /***词法分析调试***/
-    Token *t = lexer.getToken();
-    while (t->tag != FILE_END)
-    {
-        cout << t->standardOutput() << endl;
-        t = lexer.getToken();
-    }
-    cout << t->standardOutput() << endl;
+//    Token *t = lexer.getToken();
+//    while (t->tag != FILE_END)
+//    {
+//        cout << t->standardOutput() << endl;
+//        t = lexer.getToken();
+//    }
+//    cout << t->standardOutput() << endl;
     /***语法分析调试***/
-//    syntacticParser.startSyntacticAnalyze();
+    syntacticParser.startSyntacticAnalyze();
     return 0;
 }
 

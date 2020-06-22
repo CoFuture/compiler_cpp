@@ -4,7 +4,7 @@
 
 #include "FunElement.h"
 /****函数元素*****/
-FunElement::FunElement(string n, Tag t, vector<VarElement *> &l) {
+FunElement::FunElement(string n, Tag t, vector<VarElement *>& l) {
     //默认处于声明状态
     isDeclare = true;
     name = n;
@@ -13,12 +13,19 @@ FunElement::FunElement(string n, Tag t, vector<VarElement *> &l) {
     currentEspPosition = 0;
     maxEspDepth = 0;
     //函数局部变量的栈帧偏移初始化，为返回地址和栈顶开辟位置，所以从offset从8开始分配
-    for (int i = 0, tempOff = 8; i < parameterList.size(); i++, tempOff += 4) {
-        parameterList[i]->setOffset(tempOff);
+    int tempOffset = 8;
+    for (auto & i : parameterList) {
+        i->setOffset(tempOffset);
+        tempOffset += 4;
     }
 }
 
 FunElement::~FunElement() = default;
+
+Tag FunElement::getReturnType() {
+    return returnType;
+}
+
 
 //进入函数局部作用域
 void FunElement::funScopeEnter() {
@@ -47,7 +54,7 @@ bool FunElement::funMatched(FunElement *f) {
         return false;
     int paraListLength = parameterList.size();
     for (int i = 0; i < paraListLength; ++i) {
-        //todo 类型兼容性检查
+        //todo 类型兼容性检查 generateCode typeCheck
     }
     //经过检查无问题，返回正确值
     return true;
@@ -61,7 +68,7 @@ bool FunElement::parameterMatched(vector<VarElement *> &p) {
     //逐项检查
     int length =parameterList.size();
     for (int i = 0; i < length; ++i) {
-        //todo 类型检查
+        //todo 类型检查 generateCode
     }
     return true;
 }
@@ -85,3 +92,20 @@ void FunElement::copyParameterList(vector<VarElement *> p) {
 vector<VarElement *> FunElement::getParameterList() {
     return parameterList;
 }
+
+void FunElement::setFunReturnPoint(InterInstruction *point) {
+    returnPoint = point;
+}
+
+InterInstruction *FunElement::getFunReturnPoint() {
+    return returnPoint;
+}
+
+void FunElement::addInterInstruction(InterInstruction *i) {
+    interIC.addInstruction(i);
+}
+
+bool FunElement::isBasicReturnType() {
+    return returnType == KW_INT || returnType == KW_CHAR;
+}
+

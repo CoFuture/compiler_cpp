@@ -6,8 +6,6 @@
 #define COMPILER_CPP_INTERMEDIATECODE_H
 
 #include "common.h"
-#include "SymbolTable.h"
-
 /** 四元式定义
  * 标签指令label        OP_LABEL, label, -, -;
  * 函数入口             OP_FUN_ENTRY, function, -, -;
@@ -35,12 +33,15 @@
  * goto label       OP_JUMP, label, -, -;
  * if(condition)goto label      OP_JUMP_TRUE, label, condition, -;
  * if(!condition)goto label     OP_JUMP_FALSE, label, condition, -;
+ * if(var1 != var2)goto label     OP_JUMP_NOT_EQUAL, label, var1, var2;
  * function(args)   OP_ARG, -, arg, -;
  * function()       OP_FUN, -, function, -;
  * x = function()   OP_FUN_CALL, x, function, -;
  * return           OP_RETURN, -, -, -;
  * return value     OP_RETURN_VALUE, -, value, -;
  * **/
+class VarElement;
+class FunElement;
 
 
 // 这里是定义的中间指令，四元式形式
@@ -62,7 +63,7 @@ public:
     //数学运算
     InterInstruction(Operator o, VarElement* r, VarElement* v1, VarElement* v2 = nullptr);
     //跳转指令
-    InterInstruction(Operator o, InterInstruction* t, VarElement* c = nullptr);
+    InterInstruction(Operator o, InterInstruction* t, VarElement* var1= nullptr, VarElement* var2 = nullptr);
     //函数参数传入指令和NOP指令
     InterInstruction(Operator o, VarElement* arg = nullptr);
     //

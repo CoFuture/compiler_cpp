@@ -3,6 +3,7 @@
 //
 
 #include "IntermediateCode.h"
+#include "GenerateCode.h"
 
 /*中间指令部分函数的具体实现*/
 InterInstruction::InterInstruction() {
@@ -12,8 +13,8 @@ InterInstruction::InterInstruction() {
     this->arg2 = nullptr;
     this->function = nullptr;
     this->jump_target = nullptr;
-    //TODO 随机生成唯一的label名称
-    this->label_name = "";
+    //todo genLabel功能单独抽出
+    this->label_name = GenerateCode::genLabel();
 }
 
 //函数入口和出口，函数调用，赋值调用
@@ -37,11 +38,11 @@ InterInstruction::InterInstruction(Operator o, VarElement *r, VarElement *v1, Va
     this->label_name = "";
 }
 
-InterInstruction::InterInstruction(Operator o, InterInstruction *t, VarElement *c) {
+InterInstruction::InterInstruction(Operator o, InterInstruction *t, VarElement *var1, VarElement* var2) {
     this->op = o;
     this->result = nullptr;
-    this->arg1 = c;
-    this->arg2 = nullptr;
+    this->arg1 = var1;
+    this->arg2 = var2;
     this->function = nullptr;
     this->jump_target = t;
     this->label_name = "";

@@ -6,7 +6,9 @@
 #define COMPILER_CPP_COMMON_H
 #include <string>
 #include <iostream>
+#include <ext/hash_map>
 
+using namespace __gnu_cxx;
 using namespace std;
 //词法记号标记
 enum Tag{
@@ -88,10 +90,12 @@ enum Operator{
     OP_MOD,  //取模运算
     OP_NEGATIVE,  //取负运算
     OP_GREATER, OP_GREATER_EQUAL, OP_LESS, OP_LESS_EQUAL, OP_EQUAL, OP_NOT_EQUAL,  // > >= < <= == != 比较判断符号
+    OP_INC, OP_DEC, //++ --
     OP_NOT, OP_AND, OP_OR,  // ! && || 与或非运算符
     OP_LEA, OP_POINTER_SET, OP_POINTER_GET, // 取地址，指针赋值， 指针寻值
     OP_JUMP, //跳转
     OP_JUMP_TRUE, OP_JUMP_FALSE, // TRUE条件跳转 FALSE条件跳转
+    OP_JUMP_NOT_EQUAL, //不相等跳转
     OP_ARG, OP_FUN, OP_FUN_CALL,  //函数参数， 函数调用, 函数调用并赋值
     OP_RETURN, OP_RETURN_VALUE  // 无返回值return 有返回值return
 };
