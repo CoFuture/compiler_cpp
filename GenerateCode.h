@@ -24,7 +24,7 @@ public:
     //构造方法
     GenerateCode(SymbolTable& table);
     //类型检查
-    bool typeCheck(VarElement* var1, VarElement* var2);
+    static bool typeCheck(VarElement* var1, VarElement* var2);
     //进行代码入口和出口的管理
     void pushEntryAndExit(InterInstruction* entry, InterInstruction* exit);
     void popEntryAndExit();
@@ -111,6 +111,8 @@ public:
     //break和continue语句
     void genContinue();
     void genBreak();
+    //产生变量初始化语句
+    bool genVarInitial(VarElement* var);
 };
 
 

@@ -12,6 +12,8 @@ public:
     Token(Tag t);
     virtual string standardOutput();
     virtual ~Token();
+    //获取identifier的name
+    virtual string getName();
 };
 
 /******************以下为继承自token的子类**********************/
@@ -20,7 +22,8 @@ class Id:public Token{
 public:
     string id_name;
     Id(string s);
-    virtual string standardOutput();
+    string standardOutput() override;
+    string getName() override ;
 };
 
 /****************数字常量***********************/
@@ -28,7 +31,7 @@ class Num:public Token{
 public:
     int num_value;
     Num(int v);
-    virtual string standardOutput();
+    string standardOutput() override;
 };
 
 /****************字符常量***********************/
@@ -36,7 +39,7 @@ class Character:public Token{
 public:
     char character_value;
     Character(char c);
-    virtual string standardOutput();
+    string standardOutput() override;
 };
 
 /****************字符串常量***********************/
@@ -44,7 +47,7 @@ class Str:public Token{
 public:
     string string_value;
     Str(string s);
-    virtual string standardOutput();
+    string standardOutput() override;
 };
 
 

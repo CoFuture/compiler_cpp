@@ -82,6 +82,10 @@ string Token::standardOutput() {
     return token_string[tag];
 }
 
+string Token::getName() {
+    return token_string[tag];
+}
+
 /****标识符函数的实现****/
 
 Id::Id(string s):Token(IDENTIFIER){
@@ -90,6 +94,11 @@ Id::Id(string s):Token(IDENTIFIER){
 
 string Id::standardOutput() {
     return Token::standardOutput() + ":" + id_name;
+}
+
+//获取变量名称
+string Id::getName() {
+    return id_name;
 }
 
 /***********数字************/

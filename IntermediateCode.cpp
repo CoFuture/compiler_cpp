@@ -67,71 +67,197 @@ void InterInstruction::tostring() {
 
     switch (op) {
         case OP_NOP:
+            cout << "OP_NOP" << endl;
             break;
         case OP_LABEL:
             break;
         case OP_FUN_ENTRY:
+            cout << "OP_FUN_ENTRY " << endl;
             break;
         case OP_FUN_EXIT:
+            cout << "OP_FUN_EXIT " << endl;
             break;
         case OP_DECLARE:
+            cout << "OP_DECLARE ";
+            arg1->showInterValue();
+            cout << endl;
             break;
         case OP_ASSIGN:
+            result->showInterValue();
+            cout << " = ";
+            arg1->showInterValue();
+            cout << endl;
             break;
         case OP_ADD:
+            result->showInterValue();
+            cout << " = ";
+            arg1->showInterValue();
+            cout << " + ";
+            arg2->showInterValue();
+            cout << endl;
             break;
         case OP_SUB:
+            result->showInterValue();
+            cout << " = ";
+            arg1->showInterValue();
+            cout << " - ";
+            arg2->showInterValue();
+            cout << endl;
             break;
         case OP_MUL:
+            result->showInterValue();
+            cout << " = ";
+            arg1->showInterValue();
+            cout << " * ";
+            arg2->showInterValue();
+            cout << endl;
             break;
         case OP_DIV:
+            result->showInterValue();
+            cout << " = ";
+            arg1->showInterValue();
+            cout << " / ";
+            arg2->showInterValue();
+            cout << endl;
             break;
         case OP_MOD:
+            result->showInterValue();
+            cout << " = ";
+            arg1->showInterValue();
+            cout << " % ";
+            arg2->showInterValue();
+            cout << endl;
             break;
         case OP_NEGATIVE:
+            result->showInterValue();
+            cout << " = -";
+            arg1->showInterValue();
+            cout << endl;
             break;
         case OP_GREATER:
+            result->showInterValue();
+            cout << " = ";
+            arg1->showInterValue();
+            cout << " > ";
+            arg2->showInterValue();
+            cout << endl;
             break;
         case OP_GREATER_EQUAL:
+            result->showInterValue();
+            cout << " = ";
+            arg1->showInterValue();
+            cout << " >= ";
+            arg2->showInterValue();
+            cout << endl;
             break;
         case OP_LESS:
+            result->showInterValue();
+            cout << " = ";
+            arg1->showInterValue();
+            cout << " < ";
+            arg2->showInterValue();
+            cout << endl;
             break;
         case OP_LESS_EQUAL:
+            result->showInterValue();
+            cout << " = ";
+            arg1->showInterValue();
+            cout << " <= ";
+            arg2->showInterValue();
+            cout << endl;
             break;
         case OP_EQUAL:
+            result->showInterValue();
+            cout << " = ";
+            arg1->showInterValue();
+            cout << " == ";
+            arg2->showInterValue();
+            cout << endl;
             break;
         case OP_NOT_EQUAL:
+            result->showInterValue();
+            cout << " = ";
+            arg1->showInterValue();
+            cout << " != ";
+            arg2->showInterValue();
+            cout << endl;
             break;
         case OP_NOT:
+            result->showInterValue();
+            cout << " = !";
+            arg1->showInterValue();
+            cout << endl;
             break;
         case OP_AND:
+            result->showInterValue();
+            cout << " = ";
+            arg1->showInterValue();
+            cout << " && ";
+            arg2->showInterValue();
+            cout << endl;
             break;
         case OP_OR:
+            result->showInterValue();
+            cout << " = ";
+            arg1->showInterValue();
+            cout << " || ";
+            arg2->showInterValue();
+            cout << endl;
             break;
         case OP_LEA:
+            result->showInterValue();
+            cout << " = &";
+            arg1->showInterValue();
+            cout << endl;
             break;
         case OP_POINTER_SET:
+            cout << "*";
+            arg1->showInterValue();
+            cout << " = ";
+            result->showInterValue();
+            cout << endl;
             break;
         case OP_POINTER_GET:
+            result->showInterValue();
+            cout << " = *";
+            arg1->showInterValue();
+            cout << endl;
             break;
         case OP_JUMP:
+            cout << "OP_JUMP " << jump_target->label_name << endl;
             break;
         case OP_JUMP_TRUE:
+            cout << "if( ";
+            arg1->showInterValue();
+            cout << " ) jump to "  << jump_target->label_name << endl;
             break;
         case OP_JUMP_FALSE:
+            cout << "if( !";
+            arg1->showInterValue();
+            cout << " ) jump to "  << jump_target->label_name << endl;
             break;
         case OP_ARG:
+            cout << "OP_ARG ";
+            arg1->showInterValue();
             break;
         case OP_FUN:
+            cout << function->getName() << " () ";
             break;
         case OP_FUN_CALL:
+            result->showInterValue();
+            cout << " = " << function->getName() << endl;
             break;
         case OP_RETURN:
+            cout << "RETURN goto " << jump_target->label_name << endl;
             break;
         case OP_RETURN_VALUE:
+            cout << "RETURN value:";
+            arg1->showInterValue();
+            cout << "goto " << jump_target->label_name << endl;
             break;
         default:
             //默认为NOP指令
+            cout << "DEFAULT OP_NOP" << endl;
             break;
     }
 }
@@ -157,6 +283,7 @@ vector<InterInstruction *> &IntermediateCode::getIntermediateCode() {
 }
 
 void IntermediateCode::showIntermediateCode() {
+    cout << "InterCode size = " << inter_code.size() << endl;
     for (int i = 0; i < inter_code.size(); ++i) {
         inter_code[i]->tostring();
     }

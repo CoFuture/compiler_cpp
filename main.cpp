@@ -1,5 +1,6 @@
 #include <iostream>
 #include "SyntacticParser.h"
+#include "GenerateCode.h"
 
 
 int main() {
@@ -9,7 +10,8 @@ int main() {
     Scanner scanner(fileName);
     Lexer lexer(scanner);
     SymbolTable symbolTable;
-    SyntacticParser syntacticParser(lexer, symbolTable);
+    GenerateCode codeGenerator(symbolTable);
+    SyntacticParser syntacticParser(lexer, symbolTable, codeGenerator);
     /***词法分析调试***/
 //    Token *t = lexer.getToken();
 //    while (t->tag != FILE_END)
@@ -20,6 +22,8 @@ int main() {
 //    cout << t->standardOutput() << endl;
     /***语法分析调试***/
     syntacticParser.startSyntacticAnalyze();
+    symbolTable.showInformation();
+    symbolTable.showInterCode();
     return 0;
 }
 

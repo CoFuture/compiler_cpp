@@ -7,6 +7,7 @@
 #include <string>
 #include <iostream>
 #include <ext/hash_map>
+#include <list>
 
 using namespace __gnu_cxx;
 using namespace std;
@@ -99,6 +100,7 @@ enum Operator{
     OP_ARG, OP_FUN, OP_FUN_CALL,  //函数参数， 函数调用, 函数调用并赋值
     OP_RETURN, OP_RETURN_VALUE  // 无返回值return 有返回值return
 };
+
 //类的初始化声明
 //class Scanner;
 //class Lexer;

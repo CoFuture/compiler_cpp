@@ -5,6 +5,8 @@
 #include "GenerateCode.h"
 #include "SymbolTable.h"
 
+int GenerateCode::label_num = 0;
+
 GenerateCode::GenerateCode(SymbolTable &table):symbolTable(table) {
     //将符号表与中间代码生成器一一对应
     symbolTable.setGenerateCoder(this);
@@ -243,7 +245,7 @@ VarElement *GenerateCode::genSub(VarElement *var1, VarElement *var2) {
 }
 
 VarElement *GenerateCode::genMul(VarElement *var1, VarElement *var2) {
-    VarElement* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
+    auto* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
     //将temp添加到符号表中
     symbolTable.addVariable(temp);
     //生成中间代码
@@ -252,7 +254,7 @@ VarElement *GenerateCode::genMul(VarElement *var1, VarElement *var2) {
 }
 
 VarElement *GenerateCode::genDiv(VarElement *var1, VarElement *var2) {
-    VarElement* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
+    auto* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
     //将temp添加到符号表中
     symbolTable.addVariable(temp);
     //生成中间代码
@@ -261,7 +263,7 @@ VarElement *GenerateCode::genDiv(VarElement *var1, VarElement *var2) {
 }
 
 VarElement *GenerateCode::genAnd(VarElement *var1, VarElement *var2) {
-    VarElement* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
+    auto* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
     //将temp添加到符号表中
     symbolTable.addVariable(temp);
     //生成中间代码
@@ -270,7 +272,7 @@ VarElement *GenerateCode::genAnd(VarElement *var1, VarElement *var2) {
 }
 
 VarElement *GenerateCode::genMod(VarElement *var1, VarElement *var2) {
-    VarElement* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
+    auto* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
     //将temp添加到符号表中
     symbolTable.addVariable(temp);
     //生成中间代码
@@ -279,7 +281,7 @@ VarElement *GenerateCode::genMod(VarElement *var1, VarElement *var2) {
 }
 
 VarElement *GenerateCode::genOr(VarElement *var1, VarElement *var2) {
-    VarElement* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
+    auto* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
     //将temp添加到符号表中
     symbolTable.addVariable(temp);
     //生成中间代码
@@ -288,7 +290,7 @@ VarElement *GenerateCode::genOr(VarElement *var1, VarElement *var2) {
 }
 
 VarElement *GenerateCode::genEqual(VarElement *var1, VarElement *var2) {
-    VarElement* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
+    auto* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
     //将temp添加到符号表中
     symbolTable.addVariable(temp);
     //生成中间代码
@@ -297,7 +299,7 @@ VarElement *GenerateCode::genEqual(VarElement *var1, VarElement *var2) {
 }
 
 VarElement *GenerateCode::genNotEqual(VarElement *var1, VarElement *var2) {
-    VarElement* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
+    auto* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
     //将temp添加到符号表中
     symbolTable.addVariable(temp);
     //生成中间代码
@@ -306,7 +308,7 @@ VarElement *GenerateCode::genNotEqual(VarElement *var1, VarElement *var2) {
 }
 
 VarElement *GenerateCode::genGreater(VarElement *var1, VarElement *var2) {
-    VarElement* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
+    auto* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
     //将temp添加到符号表中
     symbolTable.addVariable(temp);
     //生成中间代码
@@ -315,7 +317,7 @@ VarElement *GenerateCode::genGreater(VarElement *var1, VarElement *var2) {
 }
 
 VarElement *GenerateCode::genGreaterEqual(VarElement *var1, VarElement *var2) {
-    VarElement* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
+    auto* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
     //将temp添加到符号表中
     symbolTable.addVariable(temp);
     //生成中间代码
@@ -324,7 +326,7 @@ VarElement *GenerateCode::genGreaterEqual(VarElement *var1, VarElement *var2) {
 }
 
 VarElement *GenerateCode::genLess(VarElement *var1, VarElement *var2) {
-    VarElement* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
+    auto* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
     //将temp添加到符号表中
     symbolTable.addVariable(temp);
     //生成中间代码
@@ -333,7 +335,7 @@ VarElement *GenerateCode::genLess(VarElement *var1, VarElement *var2) {
 }
 
 VarElement *GenerateCode::genLessEqual(VarElement *var1, VarElement *var2) {
-    VarElement* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
+    auto* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
     //将temp添加到符号表中
     symbolTable.addVariable(temp);
     //生成中间代码
@@ -408,7 +410,7 @@ VarElement *GenerateCode::genDec(VarElement *var) {
 //取反运算
 VarElement *GenerateCode::genNot(VarElement *var) {
     //创建临时变量
-    VarElement* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
+    auto* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
     //添加到符号表
     symbolTable.addVariable(temp);
     //添加中间代码
@@ -429,10 +431,10 @@ VarElement *GenerateCode::genLea(VarElement *var) {
     } else{
         //temp = &var 则 *temp = var
         //无指向该变量的指针，产生临时变量(指针变量)和中间代码
-        VarElement* temp = new VarElement(symbolTable.getScopePath(), var->getVarType(), true);
+        auto* temp = new VarElement(symbolTable.getScopePath(), var->getVarType(), true);
         symbolTable.addVariable(temp);
         //创建中间代码
-        InterInstruction* inter_ins = new InterInstruction(OP_LEA, temp, var);
+        auto* inter_ins = new InterInstruction(OP_LEA, temp, var);
         symbolTable.addInterInstruction(inter_ins);
         return temp;
     }
@@ -445,7 +447,7 @@ VarElement *GenerateCode::genPointer(VarElement *var) {
         return var;
     }
     //创建运算结果的临时变量
-    VarElement* temp = new VarElement(symbolTable.getScopePath(), var->getVarType(), false);
+    auto* temp = new VarElement(symbolTable.getScopePath(), var->getVarType(), false);
     //指针运算结果可作为左值
     temp->setLeft(true);
     //*var 指向 temp变量
@@ -464,7 +466,7 @@ VarElement *GenerateCode::genNegative(VarElement *var) {
         return var;
     }
     //创建临时变量
-    VarElement* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
+    auto* temp = new VarElement(symbolTable.getScopePath(), KW_INT, false);
     //添加到符号表
     symbolTable.addVariable(temp);
     //生成中间代码
@@ -565,7 +567,7 @@ VarElement *GenerateCode::genFunctionCall(FunElement *fun, vector<VarElement *> 
         return SymbolTable::var_void;
     } else {
         //函数存在非void返回值
-        VarElement* return_value = new VarElement(symbolTable.getScopePath(), fun->getReturnType(), false);
+        auto* return_value = new VarElement(symbolTable.getScopePath(), fun->getReturnType(), false);
         symbolTable.addVariable(return_value);
         symbolTable.addInterInstruction(new InterInstruction(OP_FUN_CALL, fun, return_value));
         return return_value;
@@ -740,6 +742,16 @@ void GenerateCode::genBreak() {
     } else {
         //todo 语义错误 非循环体或switch中使用break
     }
+}
+
+bool GenerateCode::genVarInitial(VarElement *var) {
+    if (var->getVarName()[0] == '[')
+        return false;
+
+    symbolTable.addInterInstruction(new InterInstruction(OP_DECLARE, var));
+    if (var->setInit())
+        genTwoOperation(OP_ASSIGN, var, var->getInitData());
+    return true;
 }
 
 

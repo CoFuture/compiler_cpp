@@ -1,6 +1,11 @@
 int main(){
     int a = 1;
+    char b = '3';
     int c = 3;
+    int* d;
+    for(int i=0; i < 3; i++){
+        c = c + 1;
+    }
     if (a < c){
         c = a;
     }

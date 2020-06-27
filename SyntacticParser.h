@@ -8,6 +8,10 @@
 #include "common.h"
 #include "Lexer.h"
 #include "SymbolTable.h"
+
+class VarElement;
+class FunElement;
+class GenerateCode;
 /*****以下是文法的定义******/
 //<程序> -> <程序片段><程序> | 空
 //<程序片段> -> <显式标志Extern><类型><声明定义>
@@ -103,6 +107,8 @@ private:
     Token *currentToken;
     //符号表
     SymbolTable &symbolTable;
+    //中间代码生成
+    GenerateCode &codeGenerator;
 
     void getNextToken();
     bool matchToken(Tag t);
@@ -112,77 +118,79 @@ private:
     //在<statement>的first集中
     bool matchTypeFirstSet();
     bool matchExpressionFirstSet();
-    bool matchControlStatementSet();
+    bool matchControlStatementFirstSet();
 
     /****非终结符的函数****/
     //非终结符的具体函数
-    void program();//程序
-    void programSegment();//程序片段
-    Tag type();//类型
+    void program();                 //程序
+    void programSegment();          //程序片段
+    Tag type();                     //类型
 
-    void decOrDef(Tag t);//声明定义 def
-    void decOrDefTail();//声明定义尾部 idtail
-    void varInit();//变量初始化 init
-    void singleVarDecOrDef();//单变量声明/定义
-    void multiVarDecOrDefTail();//多变量声明/定义尾部 deflist
-    void arrayDecOrDef();//数组声明/定义 varrdef
+    void decOrDef(Tag t);                                                   //声明定义 def
+    void decOrDefTail(Tag t, bool isPtr, string name);                      //声明定义尾部 idtail
+    VarElement* varInit(Tag t, bool isPtr, string name);                    //变量初始化 init
+    VarElement* singleVarDecOrDef(Tag t);                                   //单变量声明/定义 defData
+    void multiVarDecOrDefTail(Tag t);                                       //多变量声明/定义尾部 deflist
+    VarElement* arrayDecOrDef(Tag t, bool isPtr, string name);              //数组尾部声明/定义 varrdef
+
+
     /*****函数文法定义****/
-    void funDecOrDefTail();//函数声明/定义尾部 funtail
-    void funBlock();//函数块 block
-    void funParameterList();//函数参数列表 para
-    void singleParameter();//单参数 type paradata
-    void singleParameterTail();//单参数尾部 paradata
-    void arrayParameterTail();//数组参数尾部 paradatatail
-    void multiParameterTail();//多参数尾部 paralist
+    void funDecOrDefTail(FunElement* fun);                                  //函数声明/定义尾部 funtail
+    void funBlock();                                                        //函数块 block
+    void funParameterList(vector<VarElement*>& list);                       //函数参数列表 para
+    VarElement* singleParameter();                                                 //单参数 type paradata
+    VarElement* singleParameterTail(Tag t);                                 //单参数尾部 paradata
+    VarElement* arrayParameterTail(Tag t, string name);                     //数组参数尾部 paradatatail
+    void multiParameterTail(vector<VarElement*>& list);                     //多参数尾部 paralist
 
-    void funSubBlock();//函数子块 subprogram
-    void localVarDecOrDef();//局部变量声明/定义 localdef
-    void statement();//控制语句和表达式 statement
-
+    void funSubBlock();                                                     //函数子块 subprogram
+    void localVarDecOrDef();                                                //局部变量声明/定义 localdef
+     
+    void statement();                                                       //控制语句和表达式 statement
     /****表达式构造****/
-    void expression();//表达式 altexpr  expr|空
-    void level9Expression();//level9表达式 assexpr
-    void level9ExpressionTail();//level9表达式尾部 asstail
-    void level8Expression();//level8表达式 orexpr
-    void level8ExpressionTail();//level8 tail ortail
-    void level7Expression();//level7表达式 andexpr
-    void level7ExpressionTail();//level7 tail andtail
-    void level6Expression();//level6表达式 cmpexpr
-    void level6ExpressionTail();//level6 tail cmptail
-    Tag level6Operation();//比较判断符号 GT GE LT LE EQU NEQU
-    void level5Expression();//level5表达式 aloexpr
-    void level5ExpressionTail();//level5 tail alotail
-    Tag level5Operation();//加减运算符 + -
-    void level4Expression();//level4表达式 cmpexpr
-    void level4ExpressionTail();//level4 tail cmptail
-    Tag level4Operation();//乘除求余 * / %
-    void factorExpression();//因子表达式
-    Tag level3Operation();// ! - & * ++ --
-    void valueExpression();//值表达式
-    Tag level2Operation();// ++ -- 后置
-    void elementExpression();//表达式元素的表达式
-    void elementExpressionTail();//元素表达式尾部
-    VarElement* constant();//常量
-    void funRealParameterList();//函数实参列表
-    void singleRealParameter();//（单个）实参 arg
-    void multiRealParameterTail();//多个实参尾部
+    VarElement* expression();                                               //表达式 altexpr  expr|空
+    VarElement* level9Expression();                                         //level9表达式 assexpr
+    VarElement* level9ExpressionTail(VarElement* left_var);                      //level9表达式尾部 asstail
+    VarElement* level8Expression();                                         //level8表达式 orexpr
+    VarElement* level8ExpressionTail(VarElement* left_var);                      //level8 tail ortail
+    VarElement* level7Expression();                                         //level7表达式 andexpr
+    VarElement* level7ExpressionTail(VarElement* left_var);                      //level7 tail andtail
+    VarElement* level6Expression();                                         //level6表达式 cmpexpr
+    VarElement* level6ExpressionTail(VarElement* left_var);                      //level6 tail cmptail
+    Operator level6Operation();          //比较判断符号 GT GE LT LE EQU NEQU
+    VarElement* level5Expression();        //level5表达式 aloexpr
+    VarElement* level5ExpressionTail(VarElement* left_var);    //level5 tail alotail
+    Operator level5Operation();          //加减运算符 + -
+    VarElement* level4Expression();        //level4表达式 aloexpr
+    VarElement* level4ExpressionTail(VarElement* left_var);    //level4 tail alotail
+    Operator level4Operation();          //乘除求余 * / %
+    VarElement* factorExpression();        //因子表达式
+    Operator level3Operation();          // ! - & * ++ --
+    VarElement* valueExpression();         //值表达式 val
+    Operator level2Operation();          // ++ -- 后置
+    VarElement* elementExpression();       //表达式元素的表达式 elem
+    VarElement* elementExpressionTail(string name);   //元素表达式尾部 idxpr
+    VarElement* constant();         //常量
+    void funRealParameterList(vector<VarElement*>& args);    //函数实参列表 realarg
+    VarElement* singleRealParameter();     //（单个）实参 arg
+    void multiRealParameterTail(vector<VarElement*>& args);  //多个实参尾部 arglist
 
     /****控制语句****/
-    void controlStatement();//控制语句
-    void whileStatement();//while语句
-    void forStatement();// for
-    void forInitStatement();// for初始条件
-    void forJudgeStatement();// for循环判断条件
-    void forOperationStatement();// for循环操作
-    void doWhileStatement();// do while
-    void ifStatement();// if
-    void ifElseStatement();// else
-    void switchStatement();// switch
-    void switchCaseStatement();// switch case
+    void controlStatement();        //控制语句
+    void whileStatement();          //while语句
+    void forStatement();            // for
+    void forInitStatement();        // for初始条件
+    VarElement* forJudgeStatement();       // for循环判断条件
+    void forOperationStatement();   // for循环操作
+    void doWhileStatement();        // do while
+    void ifStatement();             // if
+    void ifElseStatement();         // else
+    void switchStatement();         // switch
+    void switchCaseStatement(VarElement* condition);     // switch case   case: literal
 
 public:
     //语法分析构造函数
-    SyntacticParser(Lexer &lexer1, SymbolTable &symbolTable1);
+    SyntacticParser(Lexer &lexer1, SymbolTable &symbolTable1, GenerateCode &generateCode1);
     //开始语法分析
     void startSyntacticAnalyze();
     //输出分析的token

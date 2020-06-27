@@ -7,7 +7,6 @@
 
 #include "common.h"
 #include "Token.h"
-#include <ext/hash_map>
 //为了使用__gnu_cxx中的hash表
 using namespace __gnu_cxx;
 

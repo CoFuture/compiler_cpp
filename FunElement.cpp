@@ -3,6 +3,74 @@
 //
 
 #include "FunElement.h"
+#include "GenerateCode.h"
+
+/*****定义的字符串输出，将tag枚举值转化为对应的字符串*****/
+const char * funTagToString[] = {
+        //特殊符号，错误和文件结束
+        "error",
+        "file_end",
+        //变量id
+        "identifier",
+        //常量 数字，字符，字符串
+        "constant_num",
+        "constant_char",
+        "constant_string",
+        //关键保留字
+        "main",
+        "scanf",
+        "printf",
+        "int",
+        "char",
+        "float",
+        "double",
+        "bool",
+        "const",
+        "void",
+        "extern",
+        //控制结构关键字
+        "if",
+        "else",
+        "switch",
+        "case",
+        "default",
+        "while",
+        "for",
+        "do",
+        "break",
+        "continue",
+        "return",
+        //界限符号-运算符和判断符
+        "+",
+        "-",
+        "*",
+        "/",
+        "%",
+        "++",
+        "--",
+        "!",
+        "&",
+        "&&",
+        "||",
+        "=",
+        ">",
+        ">=",
+        "<",
+        "<=",
+        "==",
+        "!=",
+        //界限符号特殊的
+        ",",
+        ":",
+        ";",
+        "{",
+        "}",
+        "(",
+        ")",
+        "[",
+        "]"
+};
+
 /****函数元素*****/
 FunElement::FunElement(string n, Tag t, vector<VarElement *>& l) {
     //默认处于声明状态
@@ -41,20 +109,37 @@ void FunElement::funScopeExit() {
     scopeEsp.pop_back();
 }
 
+//计算函数内变量的栈帧偏移
+void FunElement::locateVar(VarElement *var) {
+    int size = var->getVarSize();
+    //栈帧内 4字节 对齐
+    size += (4 - size%4) % 4;
+    scopeEsp.back() += size;
+    currentEspPosition += size;
+    var->setOffset(-currentEspPosition);
+}
+
 //函数声明与定义匹配
 bool FunElement::funMatched(FunElement *f) {
     //名字匹配
     if (name!= f->name)
-        return false;
-    //返回值检查
-    if (returnType != f->returnType)
         return false;
     //参数列表匹配
     if (parameterList.size() != f->parameterList.size())
         return false;
     int paraListLength = parameterList.size();
     for (int i = 0; i < paraListLength; ++i) {
-        //todo 类型兼容性检查 generateCode typeCheck
+        //类型兼容性检查 generateCode typeCheck
+        if (GenerateCode::typeCheck(parameterList[i],f->parameterList[i])){
+            if (parameterList[i]->getVarType() != f->parameterList[i]->getVarType()){
+                //todo 语义错误 函数声明冲突
+            }
+        } else
+            return false;
+    }
+    //返回值检查
+    if (returnType != f->returnType){
+        //todo 语义错误 函数返回值冲突
     }
     //经过检查无问题，返回正确值
     return true;
@@ -68,7 +153,9 @@ bool FunElement::parameterMatched(vector<VarElement *> &p) {
     //逐项检查
     int length =parameterList.size();
     for (int i = 0; i < length; ++i) {
-        //todo 类型检查 generateCode
+        //类型检查 generateCode
+        if (!GenerateCode::typeCheck(parameterList[i], p[i]))
+            return false;
     }
     return true;
 }
@@ -108,4 +195,30 @@ void FunElement::addInterInstruction(InterInstruction *i) {
 bool FunElement::isBasicReturnType() {
     return returnType == KW_INT || returnType == KW_CHAR;
 }
+
+void FunElement::showInformation() {
+    cout << funTagToString[returnType] << " ";
+    cout << name << " ";
+    //输出参数列表
+    cout << "(";
+    for (int i = 0; i < parameterList.size(); ++i) {
+        cout << "<" << parameterList[i]->getVarName() << ">";
+        if (i != parameterList.size()-1)
+            cout << ",";
+    }
+    cout << ")" << endl;
+    cout << "MaxStackDepth = " << maxEspDepth << endl;
+}
+
+void FunElement::showInterCode() {
+    cout << "------function" << name << "InterCodeStart------" << endl;
+    interIC.showIntermediateCode();
+    cout << "------function" << name << "InterCodeEnd------" << endl;
+}
+
+void FunElement::showOptimizedCode() {
+
+}
+
+
 
