@@ -8,6 +8,9 @@
 #include "VarElement.h"
 #include "IntermediateCode.h"
 
+class SymbolTable;
+class DataFlowGraph;
+
 /****符号表内——函数元素*****/
 class FunElement {
     //暂时不考虑extern
@@ -32,7 +35,7 @@ class FunElement {
     IntermediateCode interIC;
 
     //进行优化的有关变量
-    //todo 数据流图
+    DataFlowGraph* flowGraph;
     list<InterInstruction*> optimized_code;     //优化后的中间代码
 public:
     //构造函数 函数名字 返回值类型 参数列表
@@ -40,6 +43,7 @@ public:
     ~FunElement();
     //获取函数的相关信息
     Tag getReturnType();
+    int getMaxEsp();
     //判断函数返回值是否是基本类型
     bool isBasicReturnType();
 
@@ -66,6 +70,10 @@ public:
 
     //添加中间代码
     void addInterInstruction(InterInstruction* i);
+
+    //进行优化操作
+    void optimize(SymbolTable* table);
+    list<InterInstruction*>& getOptimizedCode();
 
     //输出显示相关信息
     void showInformation();     //输出Fun元素相关信息

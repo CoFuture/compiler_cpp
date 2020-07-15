@@ -77,9 +77,10 @@ void GenerateCode::genReturn(VarElement *var) {
     FunElement* cur_fun = symbolTable.getCurrentFunction();
     // 语义检查——函数返回值类型不匹配（非基本类型的转换）
     if (cur_fun->getReturnType() != var->getVarType()){
-        if (!var->isBasicType() || !cur_fun->isBasicReturnType())
-            //todo 提示语法错误
+        if (!var->isBasicType() || !cur_fun->isBasicReturnType()){
+            cout << "error! RETURN type unmatched error" << endl;
             return;
+        }
     }
     //获取函数返回点位置
     InterInstruction* return_point = cur_fun->getFunReturnPoint();
@@ -124,11 +125,15 @@ VarElement *GenerateCode::genAssign(VarElement *l_var, VarElement *r_var) {
     //指针类型的特殊处理
     //如果r_var是指针运算结果，则取pointValue
     if (r_var->getIsPointed()){
-        r_var = genPointerAssign(r_var);
+        if (!l_var->getIsPointed()){
+            symbolTable.addInterInstruction(new InterInstruction(OP_POINTER_GET, l_var, r_var->getPointer()));
+            return l_var;
+        } else
+            r_var = genPointerAssign(r_var);
     }
     //如果l_var是指针运算结果 *l = r
-    if (l_var->getIsPointer()){
-        symbolTable.addInterInstruction(new InterInstruction(OP_POINTER_SET, l_var->getPointer(), r_var));
+    if (l_var->getIsPointed()){
+        symbolTable.addInterInstruction(new InterInstruction(OP_POINTER_SET, r_var, l_var->getPointer()));
     } else
         //l = r
         symbolTable.addInterInstruction(new InterInstruction(OP_ASSIGN, l_var, r_var));

@@ -74,6 +74,7 @@ public:
     string getStrConstantValue();   //获取字符常量的值
     VarElement* getPointer();       //获取指向当前变量的指针
     VarElement* getInitData();      //获取初始化的变量
+    int getConstantValue();         //获取常量值
     bool isBasicType();             //判断变量是否是基本类型 int or char（非数组和指针）
     bool getIsPointer();            //是否是指针变量
     bool getIsPointed();            //此变量被引用，存在指向该变量的指针（也可也理解为该变量是指针运算结果）
@@ -81,7 +82,10 @@ public:
     bool getIsConstant();           //是否是常量
     bool getIsLeft();               //是否是左值的
     bool getIsVoid();               //是否是void变量
+    bool getIsInited();              //是否被初始化
     int getVarSize();               //获取变量大小
+    int getOffset();                //获取局部偏移
+    string getCharPointerValue();   //获取字符指针初值
 
     //获取变量步长——用于处理指针变量 char*为1 int*为4，基本类型均为1，视为++
     static VarElement* getStep(VarElement* var);
@@ -104,6 +108,10 @@ public:
     //输出显示方法
     void showInformation();     //显示变量信息
     void showInterValue();      //输出显示中间代码的形式
+    void showRegisterInfo();    //输出寄存器分配的相关信息
+
+    //转化为nasm语法
+    string getRawString();
 };
 
 

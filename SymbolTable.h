@@ -86,7 +86,11 @@ public:
     void showInformation();     //输出符号表信息
     void showInterCode();       //输出中间代码
     void showOptimizedCode();   //输出优化后的中间代码
+    void showRegisterId();       //输出分配的寄存器Id
 
+    //x86数据段生成
+    void genX86Data();
+    void genX86Code();
 };
 
 #endif //COMPILER_CPP_SYMBOL_TABLE_H

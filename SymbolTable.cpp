@@ -64,8 +64,6 @@ void SymbolTable::addVariable(VarElement *var) {
         //记录变量的添加顺序
         varList.push_back(varName);
     }
-
-    //TODO 中间代码生成部分
     if (generateCode){
         int initFlag = generateCode->genVarInitial(var);
         if (currentFunction && initFlag)
@@ -243,7 +241,9 @@ void SymbolTable::addInterInstruction(InterInstruction *i) {
 }
 
 void SymbolTable::optimize() {
-
+    for (auto & i : funList) {
+        functionTable[i]->optimize(this);
+    }
 }
 
 //输出符号表的相关信息
@@ -290,7 +290,80 @@ void SymbolTable::showInterCode() {
 }
 
 void SymbolTable::showOptimizedCode() {
+    for (auto & i : funList) {
+        functionTable[i]->showOptimizedCode();
+    }
+}
 
+void SymbolTable::showRegisterId() {
+    cout << "------register info start--------" << endl;
+    for (auto var_name : varList) {
+        vector<VarElement*>& list = *variableTable[var_name];
+        for (auto & j : list) {
+            j->showRegisterInfo();
+        }
+    }
+    cout << "------register info end--------" << endl;
+}
+
+void SymbolTable::genX86Data() {
+    FILE * file;
+    file = fopen(R"(F:\CodeFiles\CLion Projects\compiler-cpp\x86Code.txt)", "a");
+    vector<VarElement*> globalVars = getGlobalVariables();
+    for (int i = 0; i < globalVars.size(); ++i) {
+        VarElement* var = globalVars[i];
+        fprintf(file, "global %s\n", var->getVarName().c_str());
+        fprintf(file, "\t%s ", var->getVarName().c_str());
+        int typeSize = var->getVarType() == KW_CHAR? 1:4;
+        if (var->getIsArray())
+            fprintf(file, "times %d ", var->getVarSize() / typeSize);
+        const char* type = var->getVarType() == KW_CHAR && !var->getIsPointer()? "db": "dd";
+        fprintf(file, "%s ", type);
+
+        if (var->getIsInited()){
+            if (var->isBasicType())
+                fprintf(file, "%d\n", var->getConstantValue());
+            else
+                fprintf(file, "%s\n", var->getCharPointerValue().c_str());
+        } else
+            fprintf(file, "0\n");
+    }
+    //常量字符串
+    hash_map<string, VarElement*, hash_string>::iterator strIt, strEnd = constantTable.end();
+    for (strIt = constantTable.begin(); strIt != strEnd; ++strIt) {
+        VarElement* str = strIt->second;
+        fprintf(file, "\t%s db %s\n", str->getVarName().c_str(), str->getRawString().c_str());
+    }
+    fclose(file);
+}
+
+void SymbolTable::genX86Code() {
+    FILE * file;
+    file = fopen(R"(F:\CodeFiles\CLion Projects\compiler-cpp\x86Code.txt)", "a");
+    genX86Data();
+    fprintf(file, "section .text\n");
+    fclose(file);
+
+    hash_map<string, FunElement*, hash_string>::iterator funIt, funEnd = functionTable.end();
+    for (funIt = functionTable.begin(); funIt != funEnd; ++funIt) {
+        FunElement* fun = funIt->second;
+
+        file = fopen(R"(F:\CodeFiles\CLion Projects\compiler-cpp\x86Code.txt)", "a");
+        fprintf(file, "global %s\n", fun->getName().c_str());
+        fprintf(file, "%s:\n", fun->getName().c_str());
+        fclose(file);
+
+        list<InterInstruction*>& code = fun->getOptimizedCode();
+        list<InterInstruction*>::iterator instIt,instEnd = code.end();
+        for(instIt = code.begin(); instIt != instEnd; ++instIt){
+            (*instIt)->toX86();
+        }
+
+        file = fopen(R"(F:\CodeFiles\CLion Projects\compiler-cpp\x86Code.txt)", "a");
+        fprintf(file, "\n");
+        fclose(file);
+    }
+//    fclose(file);
 }
 
 

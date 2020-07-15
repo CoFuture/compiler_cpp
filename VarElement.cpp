@@ -130,6 +130,8 @@ VarElement::VarElement(vector<int>& sp, Tag t, string n, bool isPtr, VarElement*
     setIsPointer(isPtr);
     name = n;
     initData = init;
+//    if (isPtr)
+//        setPointerValue(init);
 }
 
 //(数组)变量的创建
@@ -243,7 +245,7 @@ bool VarElement::getIsArray() {
 }
 
 bool VarElement::getIsConstant() {
-    return isConstant;
+    return isConstant && isBasicType();
 }
 
 bool VarElement::getIsLeft() {
@@ -252,6 +254,10 @@ bool VarElement::getIsLeft() {
 
 bool VarElement::getIsVoid() {
     return type == KW_VOID;
+}
+
+bool VarElement::getIsInited() {
+    return initialed;
 }
 
 int VarElement::getVarSize() {
@@ -314,7 +320,7 @@ void VarElement::setType(Tag t) {
     type = t;
     //void类型特殊处理
     if (type == KW_VOID){
-        //TODO 语法报错 void赋值
+        cout << "error! Type of var cannot be VOID" << endl;
         type = KW_INT;
     }
 
@@ -400,6 +406,8 @@ void VarElement::showInformation() {
         else
             cout << "Value=" << intValue << endl;
     }
+    //输出存储位置
+    showRegisterInfo();
 }
 
 void VarElement::showInterValue() {
@@ -415,6 +423,52 @@ void VarElement::showInterValue() {
     } else
         cout << name << " ";
 }
+
+int VarElement::getConstantValue() {
+    return intValue;
+}
+
+void VarElement::showRegisterInfo() {
+    cout<< "VarElement: " << name << " registerId = " << register_id << " InMemory: " << in_memory << endl;
+}
+
+int VarElement::getOffset() {
+    return offset;
+}
+
+string VarElement::getCharPointerValue() {
+    return charPointerValue;
+}
+
+string VarElement::getRawString() {
+    stringstream ss;
+    int len = stringValue.length();
+    for (int i = 0,chpass = 0; i < len; ++i) {
+        if (stringValue[i] == 10 || stringValue[i] == 9 || stringValue[i] == '\"' || stringValue[i] == '\0'){
+            if (chpass == 0){
+                if (i != 0)
+                    ss << ",";
+                ss << (int)stringValue[i];
+            } else
+                ss << "\"," << (int)stringValue[i];
+            chpass = 0;
+        } else {
+            if (chpass == 0){
+                if (i != 0)
+                    ss << ",";
+                ss << "\"" << stringValue[i];
+            } else
+                ss << stringValue[i];
+            if (i == len - 1)
+                ss << "\"";
+            chpass = 1;
+        }
+    }
+    ss << ",0";
+    return ss.str();
+}
+
+
 
 
 

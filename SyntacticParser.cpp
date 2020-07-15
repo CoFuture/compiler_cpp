@@ -1113,7 +1113,6 @@ void SyntacticParser::ifStatement() {
     //离开局部作用域
     symbolTable.scopeExit();
     //<else>
-    //todo else部分 冗余删除算法？
     if (matchToken(KW_ELSE)){
         //中间代码，创建else标签
         codeGenerator.genElseHead(t_else, t_exit);

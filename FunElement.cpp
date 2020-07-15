@@ -4,6 +4,11 @@
 
 #include "FunElement.h"
 #include "GenerateCode.h"
+#include "SymbolTable.h"
+#include "DataFlowGraph.h"
+#include "ConstPropagation.h"
+#include "LiveAnalyse.h"
+#include "RegisterAssign.h"
 
 /*****定义的字符串输出，将tag枚举值转化为对应的字符串*****/
 const char * funTagToString[] = {
@@ -192,6 +197,27 @@ void FunElement::addInterInstruction(InterInstruction *i) {
     interIC.addInstruction(i);
 }
 
+void FunElement::optimize(SymbolTable *table) {
+    //创建数据流图
+    flowGraph = new DataFlowGraph(interIC);
+    //输出数据流图有关信息
+//    flowGraph->showInformation();
+//    auto* constPropagation = new ConstPropagation(table, flowGraph, parameterList);
+//    //进行常量传播
+//    constPropagation->optimize();
+
+    //变量活跃性分析，死代码消除
+    LiveAnalyse liveAnalyse(flowGraph, table, parameterList);
+    liveAnalyse.removeDeadCode();
+
+    //将优化后的中间代码保存
+    flowGraph->toInterCode(optimized_code);
+
+    //todo 寄存器分配，局部变量地址重新计算
+    ConflictGraph conflictGraph(optimized_code, parameterList, &liveAnalyse, this);
+    conflictGraph.registerAssign();
+}
+
 bool FunElement::isBasicReturnType() {
     return returnType == KW_INT || returnType == KW_CHAR;
 }
@@ -217,8 +243,22 @@ void FunElement::showInterCode() {
 }
 
 void FunElement::showOptimizedCode() {
-
+    cout << "----------" << name.c_str() << "\t optimized  start" << "-----------" << endl;
+    for (auto & code : optimized_code) {
+        code->tostring();
+    }
+    cout << "----------" << name.c_str() << "\t optimized  end" << "-----------" << endl;
 }
+
+int FunElement::getMaxEsp() {
+    return maxEspDepth;
+}
+
+list<InterInstruction *> &FunElement::getOptimizedCode() {
+    return optimized_code;
+}
+
+
 
 
 

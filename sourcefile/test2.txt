@@ -1,11 +1,22 @@
+int temp = 10;
+int array[5];
+
 int main(){
-    int a = 100;
-    char c = 'a';
-    if (a < c)
-        return 0;
-    int i = 0;
-    int temp = 0;
-    for(i=0;i<10;i++){
-        temp = temp + i;
+
+    int b = 4;
+    int c = 5;
+    int d = *array + 1;
+    int *dd = array;
+    if (b < temp){
+        b = *a + c;
+    }
+    for(int i=0 ;i < 10; i++){
+        if(i == 0){
+            continue;
+        }
+        if(i == 4){
+            break;
+        }
+        b = b + 1;
     }
 }

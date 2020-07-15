@@ -8,6 +8,8 @@
 #include <iostream>
 #include <ext/hash_map>
 #include <list>
+#include <fstream>
+#include <sstream>
 
 using namespace __gnu_cxx;
 using namespace std;

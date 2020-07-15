@@ -24,6 +24,11 @@ int main() {
     syntacticParser.startSyntacticAnalyze();
     symbolTable.showInformation();
     symbolTable.showInterCode();
+
+    symbolTable.optimize();
+    symbolTable.showOptimizedCode();
+    symbolTable.showRegisterId();
+    symbolTable.genX86Code();
     return 0;
 }
 
