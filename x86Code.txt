@@ -1,378 +1,67 @@
-global temp
-	temp dd 10
-global array
-	array times 5 dd 0
 section .text
 global main
 main:
 	push ebp
 	mov ebp,esp
 	sub esp,20
-	mov eax,1
-	mov ebx,4
-	imul ebx
-	mov [[temp]],eax
-	mov eax,array
-	mov ebx,[[temp]]
+	mov eax,[ebp-4]
+	mov ebx,2
+	cmp eax,ebx
+	jne @Label3
+	mov eax,[ebp-4]
+	mov ebx,1
 	add eax,ebx
 	mov [[temp]],eax
-	mov eax,0
 	mov eax,[[temp]]
-	lea [ebp-12],eax
-	mov eax,
-	mov eax,array
-	lea [ebp-16],eax
-	mov eax,[ebp-4]
-	mov ebx,[temp]
-	mov ecx,0
-	cmp eax,ebx
-	setl cl
-	mov [[temp]],ecx
-	mov eax,[[temp]]
-	cmp eax,0
-	je @Label2
-@Label2:
+	lea [ebp-4],eax
 @Label3:
-	mov eax,[ebp-20]
-	mov ebx,10
+	mov eax,[ebp-4]
+	mov ebx,3
+	cmp eax,ebx
+	jne @Label4
+	mov eax,[ebp-4]
+	mov ebx,1
+	sub eax,ebx
+	mov [[temp]],eax
+	mov eax,[[temp]]
+	lea [ebp-4],eax
+@Label4:
+@Label2:
+@Label5:
+	mov eax,[ebp-4]
+	mov ebx,1
+	add eax,ebx
+	mov [[temp]],eax
+	mov eax,[[temp]]
+	lea [ebp-4],eax
+	mov eax,[ebp-4]
+	mov ebx,8
 	mov ecx,0
 	cmp eax,ebx
 	setl cl
 	mov [[temp]],ecx
 	mov eax,[[temp]]
 	cmp eax,0
-	je @Label4
-	jmp @Label6
-@Label5:
+	jne @Label5
+@Label6:
+@Label7:
+	mov eax,[ebp-20]
+	mov ebx,8
+	mov ecx,0
+	cmp eax,ebx
+	setl cl
+	mov [[temp]],ecx
+	mov eax,[[temp]]
+	cmp eax,0
+	je @Label8
+	jmp @Label10
+@Label9:
 	mov eax,[ebp-20]
 	mov [[temp]],eax
 	mov eax,[ebp-20]
 	mov ebx,1
 	add eax,ebx
 	lea [ebp-20],eax
-	jmp @Label3
-@Label6:
-	jmp @Label5
-@Label4:
-@Label1:
-	mov esp,ebp
-	pop ebp
-	ret
-
-section .text
-global main
-main:
-	push ebp
-	mov ebp,esp
-	sub esp,12
-	mov eax,[ebp-4]
-	mov ebx,2
-	cmp eax,ebx
-	jne @Label3
-	mov eax,[ebp-4]
-	mov ebx,1
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp-4],eax
-@Label3:
-@Label2:
-@Label4:
-	mov eax,[ebp-4]
-	mov ebx,1
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp-4],eax
-	mov eax,[ebp-4]
-	mov ebx,8
-	mov ecx,0
-	cmp eax,ebx
-	setl cl
-	mov [[temp]],ecx
-	mov eax,[[temp]]
-	cmp eax,0
-	jne @Label4
-@Label5:
-@Label6:
-	mov eax,[ebp-12]
-	mov ebx,5
-	mov ecx,0
-	cmp eax,ebx
-	setl cl
-	mov [[temp]],ecx
-	mov eax,[[temp]]
-	cmp eax,0
-	je @Label7
-	jmp @Label9
-@Label8:
-	mov eax,[ebp-12]
-	mov [[temp]],eax
-	mov eax,[ebp-12]
-	mov ebx,1
-	add eax,ebx
-	lea [ebp-12],eax
-	jmp @Label6
-@Label9:
-	mov eax,[ebp+16]
-	mov ebx,1
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp+16],eax
-	jmp @Label8
-@Label7:
-	mov eax,[ebp-4]
-	mov ebx,[ebp+16]
-	mov ecx,0
-	cmp eax,ebx
-	setl cl
-	mov [[temp]],ecx
-	mov eax,[[temp]]
-	cmp eax,0
-	je @Label10
-	mov eax,[ebp-4]
-	lea [ebp+16],eax
-@Label10:
-	mov eax,[ebp-4]
-	mov ebx,5
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[ebp+16]
-	push eax
-	mov eax,[ebp-8]
-	push eax
-	mov eax,[[temp]]
-	push eax
-	call add
-	add esp,12
-	jmp @Label1
-@Label1:
-	mov esp,ebp
-	pop ebp
-	ret
-
-global add
-add:
-	push ebp
-	mov ebp,esp
-	sub esp,12
-	mov eax,0
-	mov eax,0
-	mov eax,[ebp+8]
-	mov ebx,[ebp+12]
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp-4],eax
-	mov eax,[ebp+12]
-	mov ebx,[ebp+16]
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp-8],eax
-	mov eax,[ebp-4]
-	mov ebx,[ebp-8]
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,0
-	mov eax,[[temp]]
-	lea [ebp-12],eax
-	jmp @Label11
-@Label11:
-	mov esp,ebp
-	pop ebp
-	ret
-
-section .text
-global main
-main:
-	push ebp
-	mov ebp,esp
-	sub esp,12
-	mov eax,[ebp-4]
-	mov ebx,2
-	cmp eax,ebx
-	jne @Label3
-	mov eax,[ebp-4]
-	mov ebx,1
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp-4],eax
-@Label3:
-@Label2:
-@Label4:
-	mov eax,[ebp-4]
-	mov ebx,1
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp-4],eax
-	mov eax,[ebp-4]
-	mov ebx,8
-	mov ecx,0
-	cmp eax,ebx
-	setl cl
-	mov [[temp]],ecx
-	mov eax,[[temp]]
-	cmp eax,0
-	jne @Label4
-@Label5:
-@Label6:
-	mov eax,[ebp-12]
-	mov ebx,5
-	mov ecx,0
-	cmp eax,ebx
-	setl cl
-	mov [[temp]],ecx
-	mov eax,[[temp]]
-	cmp eax,0
-	je @Label7
-	jmp @Label9
-@Label8:
-	mov eax,[ebp-12]
-	mov [[temp]],eax
-	mov eax,[ebp-12]
-	mov ebx,1
-	add eax,ebx
-	lea [ebp-12],eax
-	jmp @Label6
-@Label9:
-	mov eax,[ebp+16]
-	mov ebx,1
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp+16],eax
-	jmp @Label8
-@Label7:
-	mov eax,[ebp-4]
-	mov ebx,[ebp+16]
-	mov ecx,0
-	cmp eax,ebx
-	setl cl
-	mov [[temp]],ecx
-	mov eax,[[temp]]
-	cmp eax,0
-	je @Label10
-	mov eax,[ebp-4]
-	lea [ebp+16],eax
-@Label10:
-	mov eax,[ebp-4]
-	mov ebx,5
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[ebp+16]
-	push eax
-	mov eax,[ebp-8]
-	push eax
-	mov eax,[[temp]]
-	push eax
-	call add
-	add esp,12
-	jmp @Label1
-@Label1:
-	mov esp,ebp
-	pop ebp
-	ret
-
-global add
-add:
-	push ebp
-	mov ebp,esp
-	sub esp,12
-	mov eax,0
-	mov eax,0
-	mov eax,[ebp+8]
-	mov ebx,[ebp+12]
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp-4],eax
-	mov eax,[ebp+12]
-	mov ebx,[ebp+16]
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp-8],eax
-	mov eax,[ebp-4]
-	mov ebx,[ebp-8]
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,0
-	mov eax,[[temp]]
-	lea [ebp-12],eax
-	jmp @Label11
-@Label11:
-	mov esp,ebp
-	pop ebp
-	ret
-
-section .text
-global main
-main:
-	push ebp
-	mov ebp,esp
-	sub esp,12
-	mov eax,[ebp-4]
-	mov ebx,2
-	cmp eax,ebx
-	jne @Label3
-	mov eax,[ebp-4]
-	mov ebx,1
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp-4],eax
-@Label3:
-	mov eax,[ebp-4]
-	mov ebx,3
-	cmp eax,ebx
-	jne @Label4
-	mov eax,[ebp-4]
-	mov ebx,1
-	sub eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp-4],eax
-@Label4:
-@Label2:
-@Label5:
-	mov eax,[ebp-4]
-	mov ebx,1
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp-4],eax
-	mov eax,[ebp-4]
-	mov ebx,8
-	mov ecx,0
-	cmp eax,ebx
-	setl cl
-	mov [[temp]],ecx
-	mov eax,[[temp]]
-	cmp eax,0
-	jne @Label5
-@Label6:
-@Label7:
-	mov eax,[ebp-12]
-	mov ebx,5
-	mov ecx,0
-	cmp eax,ebx
-	setl cl
-	mov [[temp]],ecx
-	mov eax,[[temp]]
-	cmp eax,0
-	je @Label8
-	jmp @Label10
-@Label9:
-	mov eax,[ebp-12]
-	mov [[temp]],eax
-	mov eax,[ebp-12]
-	mov ebx,1
-	add eax,ebx
-	lea [ebp-12],eax
 	jmp @Label7
 @Label10:
 	mov eax,[ebp+16]
@@ -383,142 +72,34 @@ main:
 	lea [ebp+16],eax
 	jmp @Label9
 @Label8:
-	mov eax,[ebp-4]
-	mov ebx,[ebp+16]
+@Label11:
+	mov eax,[ebp-20]
+	mov ebx,3
 	mov ecx,0
 	cmp eax,ebx
 	setl cl
 	mov [[temp]],ecx
 	mov eax,[[temp]]
 	cmp eax,0
-	je @Label11
-	mov eax,[ebp-4]
-	lea [ebp+16],eax
-@Label11:
-	mov eax,[ebp-4]
-	mov ebx,5
-	add eax,ebx
+	je @Label12
+	jmp @Label14
+@Label13:
+	mov eax,[ebp-20]
 	mov [[temp]],eax
-	mov eax,[ebp+16]
-	push eax
-	mov eax,[ebp-8]
-	push eax
-	mov eax,[[temp]]
-	push eax
-	call add
-	add esp,12
-	jmp @Label1
-@Label1:
-	mov esp,ebp
-	pop ebp
-	ret
-
-global add
-add:
-	push ebp
-	mov ebp,esp
-	sub esp,12
-	mov eax,0
-	mov eax,0
-	mov eax,[ebp+8]
-	mov ebx,[ebp+12]
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp-4],eax
-	mov eax,[ebp+12]
-	mov ebx,[ebp+16]
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp-8],eax
-	mov eax,[ebp-4]
-	mov ebx,[ebp-8]
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,0
-	mov eax,[[temp]]
-	lea [ebp-12],eax
-	jmp @Label12
-@Label12:
-	mov esp,ebp
-	pop ebp
-	ret
-
-section .text
-global main
-main:
-	push ebp
-	mov ebp,esp
-	sub esp,12
-	mov eax,[ebp-4]
-	mov ebx,2
-	cmp eax,ebx
-	jne @Label3
-	mov eax,[ebp-4]
+	mov eax,[ebp-20]
 	mov ebx,1
 	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp-4],eax
-@Label3:
-	mov eax,[ebp-4]
-	mov ebx,3
-	cmp eax,ebx
-	jne @Label4
-	mov eax,[ebp-4]
+	lea [ebp-20],eax
+	jmp @Label11
+@Label14:
+	mov eax,[ebp+16]
 	mov ebx,1
 	sub eax,ebx
 	mov [[temp]],eax
 	mov eax,[[temp]]
-	lea [ebp-4],eax
-@Label4:
-@Label2:
-@Label5:
-	mov eax,[ebp-4]
-	mov ebx,1
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
-	lea [ebp-4],eax
-	mov eax,[ebp-4]
-	mov ebx,8
-	mov ecx,0
-	cmp eax,ebx
-	setl cl
-	mov [[temp]],ecx
-	mov eax,[[temp]]
-	cmp eax,0
-	jne @Label5
-@Label6:
-@Label7:
-	mov eax,[ebp-12]
-	mov ebx,5
-	mov ecx,0
-	cmp eax,ebx
-	setl cl
-	mov [[temp]],ecx
-	mov eax,[[temp]]
-	cmp eax,0
-	je @Label8
-	jmp @Label10
-@Label9:
-	mov eax,[ebp-12]
-	mov [[temp]],eax
-	mov eax,[ebp-12]
-	mov ebx,1
-	add eax,ebx
-	lea [ebp-12],eax
-	jmp @Label7
-@Label10:
-	mov eax,[ebp+16]
-	mov ebx,1
-	add eax,ebx
-	mov [[temp]],eax
-	mov eax,[[temp]]
 	lea [ebp+16],eax
-	jmp @Label9
-@Label8:
+	jmp @Label13
+@Label12:
 	mov eax,[ebp-4]
 	mov ebx,[ebp+16]
 	mov ecx,0
@@ -527,17 +108,17 @@ main:
 	mov [[temp]],ecx
 	mov eax,[[temp]]
 	cmp eax,0
-	je @Label11
+	je @Label16
 	mov eax,[ebp-4]
 	lea [ebp+16],eax
-@Label11:
+@Label16:
 	mov eax,[ebp-4]
 	mov ebx,5
 	add eax,ebx
 	mov [[temp]],eax
 	mov eax,[ebp+16]
 	push eax
-	mov eax,[ebp-8]
+	mov eax,[ebp-16]
 	push eax
 	mov eax,[[temp]]
 	push eax
@@ -575,8 +156,8 @@ add:
 	mov eax,0
 	mov eax,[[temp]]
 	lea [ebp-12],eax
-	jmp @Label12
-@Label12:
+	jmp @Label17
+@Label17:
 	mov esp,ebp
 	pop ebp
 	ret
